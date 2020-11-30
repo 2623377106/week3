@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Bootstrap 实例 - 边框表格</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<table class="table table-bordered">
+    <a href="{:url('home/index/selcart')}"><button type="button" class="btn btn-info">我的购物车</button></a>
+    <thead>
+    <tr>
+        <th>商品名称</th>
+        <th>商品价格</th>
+        <th>商品库存</th>
+        <th>商品图片</th>
+        <th>购买商品</th>
+    </tr>
+    </thead>
+    <tbody>
+    {foreach $data as $val}
+    <tr>
+        <td>{$val.goods_name}</td>
+        <td>{$val.goods_price}</td>
+        <td>{$val.goods_number}</td>
+        <td><img src="__STATIC__{$val.goods_logo}" alt="" width="40px" height="40px"></td>
+        <td><a href="{:url('home/index/cart')}?id={$val.goods_id}"><button type="button" class="btn btn-danger" id="">添加购物车</button></a></td>
+    </tr>
+    {/foreach}
+    </tbody>
+</table>
+
+</body>
+</html>

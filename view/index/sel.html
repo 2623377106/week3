@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Bootstrap 实例 - 基本的表格</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<table class="table">
+    <caption>基本的表格布局</caption>
+    <thead>
+    <tr>
+        <th>商品</th>
+        <th>单价</th>
+        <th>数量</th>
+        <th>总金额</th>
+        <th>生成订单</th>
+    </tr>
+    </thead>
+    <tbody>
+    {foreach $data as $val}
+    <tr >
+        <input type="hidden" value="{$val.cart_id}" class="cart_id">
+        <td><img src="{$val.goods_logo}" alt="">{$val.goods_name}</td>
+        <td class="price">{$val.goods_price}</td>
+        <td>
+            <button class="jian">-</button>
+            <input type="text" value="{$val.number}" style="width: 40px" class="number">
+            <button class="jia">+</button>
+        </td>
+        <td class="prices">{$val.goods_price}</td>
+        <td><a href="{:url('home/index/order')}?id={$val.cart_id}"><button type="button" class="btn btn-info">生成订单</button></a></td>
+    </tr>
+    {/foreach}
+    </tbody>
+</table>
+</body>
+</html>
+<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js">
+</script>
+<script>
+    $(document).ready(function(){
+        $(".jia").click(function(){
+            // 获取到文本框里的值
+            var number=parseInt($(".number").val());
+            var cart_id=$(".cart_id").val();
+           // 获取到之后，修改框里的数量
+            number+=1;
+            $.ajax({
+                type: "POST",
+                url: "{:url('home/index/jia')}",
+                data: {
+                    number:number,
+                    cart_id:cart_id
+                },
+                success: function(msg){
+                    console.log(msg)
+                }
+            });
+            // 替换文本框里的值
+            $(".jia").prev(".number").val(number);
+            // 同时更改小计
+            // 小计等于单价乘以数量
+            // 获取到单价
+           var  price=$(".price").html();
+            $(".prices").html(price*number)
+        });
+        $(".jian").click(function(){
+            // 获取到文本框里的值
+            var number=parseInt($(".number").val());
+            var cart_id=$(".cart_id").val();
+            // 获取到之后，修改框里的数量
+            number-=1;
+            // 不能减到小于0
+            if(number<1){
+                return
+            }
+            $.ajax({
+                type: "POST",
+                url: "{:url('home/index/jia')}",
+                data: {
+                    number:number,
+                    cart_id:cart_id
+                },
+                success: function(msg){
+                    console.log(msg)
+                }
+            });
+            // 替换文本框里的值
+            $(".jian").next(".number").val(number);
+            // 同时更改小计
+            // 小计等于单价乘以数量
+            // 获取到单价
+            var  price=$(".price").html();
+            $(".prices").html(price*number)
+        });
+    });
+</script>
